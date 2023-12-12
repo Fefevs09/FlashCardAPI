@@ -49,12 +49,14 @@ public class DeckService {
         return this.deckRepository.findDeckById(id).get();
     }
 
-    public Deck updateDeck(Long id, DeckDTO deck) {
-        Deck newDeck = this.findDeckById(id);
+    public Deck updateDeck(Long id, DeckDTO newDeck) {
+        Deck deck = this.findDeckById(id);
 
-        newDeck.setTitulo(deck.titulo());
-        this.deckRepository.save(newDeck);
-        return newDeck;
+        deck.setTitulo(newDeck.titulo());
+
+        this.deckRepository.save(deck);
+
+        return deck;
     }
 
     public void deleteDeck(Long id) {
