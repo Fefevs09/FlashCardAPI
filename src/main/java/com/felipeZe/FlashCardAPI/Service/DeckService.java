@@ -28,6 +28,10 @@ public class DeckService {
         newDeck.setTitulo(deckRequest.titulo());
         newDeck.setUser(user);
 
+        List<Deck> userDecks = user.getDeck();
+        userDecks.add(newDeck);
+        user.setDeck(userDecks);
+
         this.deckRepository.save(newDeck);
 
         return newDeck;
