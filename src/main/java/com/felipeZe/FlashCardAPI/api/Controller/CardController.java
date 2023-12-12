@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping
+@RequestMapping("/card")
 public class CardController {
     private final CardService cardService;
 
@@ -21,35 +21,35 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping("/cards")
-    public ResponseEntity<List<Card>> listCards() {
-        List<Card> cards = cardService.listAllCards();
+//    @GetMapping
+//    public ResponseEntity<List<Card>> listCards() {
+//        List<Card> cards = cardService.listAllCards();
+//
+//        return new ResponseEntity<>(cards, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(cards, HttpStatus.OK);
-    }
-
-    @GetMapping("/card/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Card> getCard(@PathVariable Long id) {
         Card card = cardService.findCardById(id);
 
         return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
-    @GetMapping("/cards/{deckId}")
+    @GetMapping("/deck/{deckId}")
     public ResponseEntity<List<Card>> listCardsById(@PathVariable Long deckId) {
         List<Card> cards = this.cardService.listCardsByDeck(deckId);
 
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
-    @PostMapping("/card")
+    @PostMapping
     public ResponseEntity<Card> createCard(@RequestBody CardDTO createCard) {
         Card card = cardService.createCard(createCard);
 
         return new ResponseEntity<>(card, HttpStatus.CREATED);
     }
 
-    @PutMapping("/card/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Card> updateCard(@PathVariable Long id, @RequestBody CardDTO updateCard) {
 
         Card card = cardService.findCardById(id);
@@ -58,7 +58,7 @@ public class CardController {
         return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
-    @DeleteMapping("/card/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Card> deleteCard(@PathVariable Long id) {
         cardService.deletedCard(id);
 
