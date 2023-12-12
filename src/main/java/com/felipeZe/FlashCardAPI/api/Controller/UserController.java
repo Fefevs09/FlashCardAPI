@@ -1,67 +1,54 @@
 package com.felipeZe.FlashCardAPI.api.Controller;
 
 import com.felipeZe.FlashCardAPI.Service.UserService;
-import com.felipeZe.FlashCardAPI.api.Model.User;
-import com.felipeZe.FlashCardAPI.api.Requests.CreateUser;
+import com.felipeZe.FlashCardAPI.api.Model.Users;
+import com.felipeZe.FlashCardAPI.dtos.UserDTO;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser() {
-        List<User> users =  userService.listUsers();
+    public ResponseEntity<List<Users>> getAllUser() {
+        List<Users> users = userService.listUsers();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        Optional<User> user = userService.getUser(id);
-        if (user.isPresent()) {
-            return new  ResponseEntity<>(user.get(), HttpStatus.OK);
-        }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Users> getUser(@PathVariable Long id) throws Exception {
+        Users user = userService.findUserById(id);
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUser(@RequestBody CreateUser createUser) {
-        User user = userService.createUser(createUser.createUser());
+    public ResponseEntity<Users> createUser(@RequestBody UserDTO createUser) {
+        Users user = userService.createUser(createUser);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody CreateUser createUser) {
-        Optional<User> optionalUser = userService.getUser(id);
-        if (optionalUser.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<Users> updateUser(@PathVariable Long id, @RequestBody UserDTO updateUser) throws Exception {
+        Users user = this.userService.updateUser(id,updateUser);
 
-        User user = optionalUser.get();
-
-        user.setNome(createUser.nome());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<User> deleteUser(@RequestBody Long id) {
+    public ResponseEntity<Users> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
 
         return ResponseEntity.noContent().build();

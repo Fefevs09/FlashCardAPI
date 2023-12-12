@@ -1,37 +1,34 @@
 package com.felipeZe.FlashCardAPI.Service;
 
-import com.felipeZe.FlashCardAPI.api.Model.User;
+import com.felipeZe.FlashCardAPI.api.Model.Users;
 import com.felipeZe.FlashCardAPI.api.Repository.UserRepository;
-import org.springframework.scheduling.config.Task;
+import com.felipeZe.FlashCardAPI.dtos.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public List<Users> listUsers() {
+        return this.userRepository.findAll();
     }
 
-    public List<User> listUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
+    public Users createUser(UserDTO user) {
+        Users newUser = new Users(user);
+        this.userRepository.save(newUser);
+        return newUser;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public Users findUserById(Long id) throws Exception {
+        return this.userRepository.findUserById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
     }
-
-    public Optional<User> getUser(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public User updateUser(User user) {
+    public Users updateUser(Long id, UserDTO updatedUser) throws Exception {
+        Users user = this.findUserById(id);
+        user.setNome(updatedUser.nome());
         return userRepository.save(user);
     }
 
