@@ -34,7 +34,7 @@ public class CardService {
         Card newCard = new Card();
         newCard.setPergunta(card.pergunta());
         newCard.setResposta(card.reposta());
-        newCard.revisaoEspacada(Feedback.NONE);
+        newCard.setFeedback(Feedback.NONE);
         newCard.setRevisao(LocalDate.now());
         newCard.setDeck(deck);
 
@@ -50,13 +50,16 @@ public class CardService {
     public List<Card> listCardsByDeck(Long id) {
         return this.cardRepository.findByDeckId(id);
     }
+
     public Card updateCard(Long id, CardDTO uptadedCard) {
+
         Card card = this.findCardById(id);
         card.setPergunta(uptadedCard.pergunta());
         card.setResposta(uptadedCard.reposta());
+        card.setFeedback(uptadedCard.feedback());
+        card.setRevisao(card.revisaoEspacada());
 
         return this.cardRepository.save(card);
-
     }
 
     public void deletedCard(Long id) {
