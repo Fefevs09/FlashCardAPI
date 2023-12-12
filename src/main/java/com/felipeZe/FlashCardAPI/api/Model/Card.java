@@ -1,47 +1,43 @@
 package com.felipeZe.FlashCardAPI.api.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felipeZe.FlashCardAPI.dtos.CardDTO;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "card")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Card {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String pergunta, resposta;
-    private int numVezesRespon;
-    private LocalDate revisao;
+    private LocalDate revisao = LocalDate.now();
+    @Enumerated(EnumType.STRING)
     private Feedback feedback;
+    @ManyToOne
+    @JoinColumn(name = "deck_id")
+    @JsonBackReference
+    private Deck deck;
 
-    public Card(int id, String pergunta, String resposta) {
-        this.id = id;
-        this.pergunta = pergunta;
-        this.resposta = resposta;
-        this.numVezesRespon = 0;
-        this.revisao = LocalDate.now();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getPergunta() {
-        return pergunta;
-    }
-
-    public String getResposta() {
-        return resposta;
-    }
-
-    public int getNumVezesRespon() {
-        return numVezesRespon;
-    }
-
-    public LocalDate getRevisao() {
-        return revisao;
-    }
-
-    public Feedback getFeedback() {
-        return feedback;
+    public Card(CardDTO card) {
+        this.resposta = card.reposta();
+        this.pergunta = card.pergunta();
     }
 
     public LocalDate revisaoEspacada(Feedback feedback){
+
+        if (revisao == null)
+            revisao = LocalDate.now();
 
         switch(feedback){
             case HARD:
