@@ -27,7 +27,7 @@ public class Deck {
     @JoinColumn(name = "usuario_id")
     @JsonBackReference
     private Users user;
-    @OneToMany(mappedBy = "deck")
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Card> cards;
 

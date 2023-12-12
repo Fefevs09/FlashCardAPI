@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.felipeZe.FlashCardAPI.dtos.CardDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 
@@ -34,21 +36,25 @@ public class Card {
         this.pergunta = card.pergunta();
     }
 
-    public LocalDate revisaoEspacada(Feedback feedback){
+    public LocalDate revisaoEspacada(){
 
-        if (revisao == null)
-            revisao = LocalDate.now();
-
-        switch(feedback){
+        switch(this.feedback){
             case HARD:
-                revisao = revisao.plusDays(1);
+                this.revisao = revisao.plusDays(1);
                 break;
             case GOOD:
-                revisao = revisao.plusWeeks(1);
+                this.revisao = revisao.plusWeeks(1);
                 break;
             case EASY:
-                revisao = revisao.plusMonths(1);
+                this.revisao = revisao.plusMonths(1);
+                break;
+            case NONE:
+                this.revisao = LocalDate.now();
+                break;
+            default:
+                this.revisao = LocalDate.now();
+                break;
         }
-        return revisao;
+        return this.revisao;
     }
 }
