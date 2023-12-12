@@ -1,0 +1,68 @@
+package com.felipeZe.FlashCardAPI.api.Controller;
+
+import com.felipeZe.FlashCardAPI.Service.CardService;
+import com.felipeZe.FlashCardAPI.api.Model.Card;
+import com.felipeZe.FlashCardAPI.dtos.CardDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping
+public class CardController {
+    private final CardService cardService;
+
+    @Autowired
+    public CardController(CardService cardService) {
+        this.cardService = cardService;
+    }
+
+    @GetMapping("/cards")
+    public ResponseEntity<List<Card>> listCards() {
+        List<Card> cards = cardService.listAllCards();
+
+        return new ResponseEntity<>(cards, HttpStatus.OK);
+    }
+
+    @GetMapping("/card/{id}")
+    public ResponseEntity<Card> getCard(@PathVariable Long id) {
+        Card card = cardService.findCardById(id);
+
+        return new ResponseEntity<>(card, HttpStatus.OK);
+    }
+
+    @GetMapping("/cards/{deckId}")
+    public ResponseEntity<List<Card>> listCardsById(@PathVariable Long deckId) {
+        List<Card> cards = this.cardService.listCardsByDeck(deckId);
+
+        return new ResponseEntity<>(cards, HttpStatus.OK);
+    }
+
+    @PostMapping("/card")
+    public ResponseEntity<Card> createCard(@RequestBody CardDTO createCard) {
+        Card card = cardService.createCard(createCard);
+
+        return new ResponseEntity<>(card, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/card/{id}")
+    public ResponseEntity<Card> updateCard(@PathVariable Long id, @RequestBody CardDTO updateCard) {
+
+        Card card = cardService.findCardById(id);
+        this.cardService.updateCard(id, updateCard);
+
+        return new ResponseEntity<>(card, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/card/{id}")
+    public ResponseEntity<Card> deleteCard(@PathVariable Long id) {
+        cardService.deletedCard(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+}
