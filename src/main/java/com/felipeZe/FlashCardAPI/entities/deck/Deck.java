@@ -1,14 +1,15 @@
-package com.felipeZe.FlashCardAPI.api.Model;
+package com.felipeZe.FlashCardAPI.entities.deck;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felipeZe.FlashCardAPI.entities.card.Card;
+import com.felipeZe.FlashCardAPI.entities.user.Users;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity(name = "deck")
 @Table(name = "deck")
@@ -22,9 +23,10 @@ public class Deck {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
-    private String titulo;
+    private String title;
+    private LocalDateTime dateCreate;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private Users user;
     @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)

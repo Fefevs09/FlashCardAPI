@@ -1,4 +1,6 @@
 package com.felipeZe.FlashCardAPI.dtos;
 
-public record UserDTO(String nome, String email, String senha) {
+import com.felipeZe.FlashCardAPI.entities.user.UserRole;
+
+public record UserDTO(String name, String email, String password, UserRole role) {
 }

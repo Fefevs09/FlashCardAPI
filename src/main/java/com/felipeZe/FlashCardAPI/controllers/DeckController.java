@@ -1,7 +1,7 @@
-package com.felipeZe.FlashCardAPI.api.Controller;
+package com.felipeZe.FlashCardAPI.controllers;
 
-import com.felipeZe.FlashCardAPI.Service.DeckService;
-import com.felipeZe.FlashCardAPI.api.Model.Deck;
+import com.felipeZe.FlashCardAPI.services.DeckService;
+import com.felipeZe.FlashCardAPI.entities.deck.Deck;
 import com.felipeZe.FlashCardAPI.dtos.DeckDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class DeckController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Deck>> listDecksByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<Deck>> listDecksByUserId(@PathVariable String userId) {
         List<Deck> decks = deckService.listDecksByUser(userId);
 
         return new ResponseEntity<>(decks, HttpStatus.OK);

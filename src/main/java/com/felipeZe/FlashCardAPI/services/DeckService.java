@@ -1,15 +1,14 @@
-package com.felipeZe.FlashCardAPI.Service;
+package com.felipeZe.FlashCardAPI.services;
 
-import com.felipeZe.FlashCardAPI.api.Model.Deck;
-import com.felipeZe.FlashCardAPI.api.Model.Users;
-import com.felipeZe.FlashCardAPI.api.Repository.DeckRepository;
+import com.felipeZe.FlashCardAPI.entities.deck.Deck;
+import com.felipeZe.FlashCardAPI.entities.user.Users;
+import com.felipeZe.FlashCardAPI.repositorys.DeckRepository;
 import com.felipeZe.FlashCardAPI.dtos.DeckDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DeckService {
@@ -25,8 +24,9 @@ public class DeckService {
         Users user = this.userService.findUserById(deckRequest.userID());
 
         Deck newDeck = new Deck();
-        newDeck.setTitulo(deckRequest.titulo());
+        newDeck.setTitle(deckRequest.title());
         newDeck.setUser(user);
+        newDeck.setDateCreate(LocalDateTime.now());
 
         List<Deck> userDecks = user.getDeck();
         userDecks.add(newDeck);
@@ -41,7 +41,7 @@ public class DeckService {
         return this.deckRepository.findAll();
     }
 
-    public List<Deck> listDecksByUser(Long userId) {
+    public List<Deck> listDecksByUser(String userId) {
         return this.deckRepository.findByUserId(userId);
     }
 
@@ -52,7 +52,7 @@ public class DeckService {
     public Deck updateDeck(Long id, DeckDTO newDeck) {
         Deck deck = this.findDeckById(id);
 
-        deck.setTitulo(newDeck.titulo());
+        deck.setTitle(newDeck.title());
 
         this.deckRepository.save(deck);
 

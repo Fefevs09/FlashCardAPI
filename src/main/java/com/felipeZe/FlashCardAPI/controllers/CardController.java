@@ -1,7 +1,7 @@
-package com.felipeZe.FlashCardAPI.api.Controller;
+package com.felipeZe.FlashCardAPI.controllers;
 
-import com.felipeZe.FlashCardAPI.Service.CardService;
-import com.felipeZe.FlashCardAPI.api.Model.Card;
+import com.felipeZe.FlashCardAPI.services.CardService;
+import com.felipeZe.FlashCardAPI.entities.card.Card;
 import com.felipeZe.FlashCardAPI.dtos.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/card")

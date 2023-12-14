@@ -1,12 +1,10 @@
-package com.felipeZe.FlashCardAPI.api.Model;
+package com.felipeZe.FlashCardAPI.entities.card;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felipeZe.FlashCardAPI.entities.deck.Deck;
 import com.felipeZe.FlashCardAPI.dtos.CardDTO;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 
@@ -22,8 +20,8 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String pergunta, resposta;
-    private LocalDate revisao = LocalDate.now();
+    private String question, answer;
+    private LocalDate review = LocalDate.now();
     @Enumerated(EnumType.STRING)
     private Feedback feedback;
     @ManyToOne
@@ -32,29 +30,26 @@ public class Card {
     private Deck deck;
 
     public Card(CardDTO card) {
-        this.resposta = card.reposta();
-        this.pergunta = card.pergunta();
+        this.answer = card.reposta();
+        this.question = card.pergunta();
     }
 
     public LocalDate revisaoEspacada(){
 
         switch(this.feedback){
-            case HARD:
-                this.revisao = revisao.plusDays(1);
+            case HARD, NONE:
+                this.review = review.plusDays(1);
                 break;
             case GOOD:
-                this.revisao = revisao.plusWeeks(1);
+                this.review = review.plusWeeks(1);
                 break;
             case EASY:
-                this.revisao = revisao.plusMonths(1);
-                break;
-            case NONE:
-                this.revisao = LocalDate.now();
+                this.review = review.plusMonths(1);
                 break;
             default:
-                this.revisao = LocalDate.now();
+                this.review = LocalDate.now();
                 break;
         }
-        return this.revisao;
+        return this.review;
     }
 }

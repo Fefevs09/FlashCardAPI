@@ -1,9 +1,9 @@
-package com.felipeZe.FlashCardAPI.Service;
+package com.felipeZe.FlashCardAPI.services;
 
-import com.felipeZe.FlashCardAPI.api.Model.Card;
-import com.felipeZe.FlashCardAPI.api.Model.Deck;
-import com.felipeZe.FlashCardAPI.api.Model.Feedback;
-import com.felipeZe.FlashCardAPI.api.Repository.CardRepository;
+import com.felipeZe.FlashCardAPI.entities.card.Card;
+import com.felipeZe.FlashCardAPI.entities.deck.Deck;
+import com.felipeZe.FlashCardAPI.entities.card.Feedback;
+import com.felipeZe.FlashCardAPI.repositorys.CardRepository;
 import com.felipeZe.FlashCardAPI.dtos.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +32,10 @@ public class CardService {
         Deck deck = this.deckService.findDeckById(card.deckId());
 
         Card newCard = new Card();
-        newCard.setPergunta(card.pergunta());
-        newCard.setResposta(card.reposta());
+        newCard.setQuestion(card.pergunta());
+        newCard.setAnswer(card.reposta());
         newCard.setFeedback(Feedback.NONE);
-        newCard.setRevisao(LocalDate.now());
+        newCard.setReview(LocalDate.now());
         newCard.setDeck(deck);
 
         List<Card> cards = deck.getCards();
@@ -54,10 +54,10 @@ public class CardService {
     public Card updateCard(Long id, CardDTO uptadedCard) {
 
         Card card = this.findCardById(id);
-        card.setPergunta(uptadedCard.pergunta());
-        card.setResposta(uptadedCard.reposta());
+        card.setQuestion(uptadedCard.pergunta());
+        card.setAnswer(uptadedCard.reposta());
         card.setFeedback(uptadedCard.feedback());
-        card.setRevisao(card.revisaoEspacada());
+        card.setReview(card.revisaoEspacada());
 
         return this.cardRepository.save(card);
     }
