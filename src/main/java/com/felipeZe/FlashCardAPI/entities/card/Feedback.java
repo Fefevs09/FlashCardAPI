@@ -1,4 +1,4 @@
-package com.felipeZe.FlashCardAPI.api.Model;
+package com.felipeZe.FlashCardAPI.entities.card;
 
 public enum Feedback {
     NONE,

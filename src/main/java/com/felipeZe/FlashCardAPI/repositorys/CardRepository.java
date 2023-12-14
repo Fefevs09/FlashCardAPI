@@ -1,8 +1,7 @@
-package com.felipeZe.FlashCardAPI.api.Repository;
+package com.felipeZe.FlashCardAPI.repositorys;
 
-import com.felipeZe.FlashCardAPI.api.Model.Card;
+import com.felipeZe.FlashCardAPI.entities.card.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
